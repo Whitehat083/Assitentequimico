@@ -1,0 +1,5 @@
+{
+  "name": "Chemistry AI Assistant",
+  "description": "An interactive AI assistant for chemistry education, experiments, and analysis. Explore concepts, generate lab reports, perform calculations, and browse the periodic table.",
+  "requestFramePermissions": []
+}
