@@ -54,6 +54,7 @@ export interface Translation {
     placeholder: string;
   };
   elements: { [key: string]: string };
+  periodicTableCategories: { [key: string]: string };
 }
 
 const en: Translation = {
@@ -120,6 +121,23 @@ const en: Translation = {
     Hf: "Hafnium", Ta: "Tantalum", W: "Tungsten", Re: "Rhenium", Os: "Osmium", Ir: "Iridium", Pt: "Platinum", Au: "Gold", Hg: "Mercury", Tl: "Thallium", Pb: "Lead", Bi: "Bismuth", Po: "Polonium", At: "Astatine", Rn: "Radon",
     Fr: "Francium", Ra: "Radium", Ac: "Actinium", Th: "Thorium", Pa: "Protactinium", U: "Uranium", Np: "Neptunium", Pu: "Plutonium", Am: "Americium", Cm: "Curium", Bk: "Berkelium", Cf: "Californium", Es: "Einsteinium", Fm: "Fermium", Md: "Mendelevium", No: "Nobelium", Lr: "Lawrencium",
     Rf: "Rutherfordium", Db: "Dubnium", Sg: "Seaborgium", Bh: "Bohrium", Hs: "Hassium", Mt: "Meitnerium", Ds: "Darmstadtium", Rg: "Roentgenium", Cn: "Copernicium", Nh: "Nihonium", Fl: "Flerovium", Mc: "Moscovium", Lv: "Livermorium", Ts: "Tennessine", Og: "Oganesson"
+  },
+  periodicTableCategories: {
+    'diatomic nonmetal': "Diatomic Nonmetal",
+    'noble gas': "Noble Gas",
+    'alkali metal': "Alkali Metal",
+    'alkaline earth metal': "Alkaline Earth Metal",
+    'metalloid': "Metalloid",
+    'polyatomic nonmetal': "Polyatomic Nonmetal",
+    'post-transition metal': "Post-Transition Metal",
+    'transition metal': "Transition Metal",
+    'lanthanide': "Lanthanide",
+    'actinide': "Actinide",
+    'unknown, probably transition metal': 'Unknown',
+    'unknown, probably post-transition metal': 'Unknown',
+    'unknown, probably metalloid': 'Unknown',
+    'unknown, predicted to be noble gas': 'Unknown',
+    'unknown': "Unknown"
   },
 };
 
@@ -188,6 +206,23 @@ const pt: Translation = {
     Fr: "Frâncio", Ra: "Rádio", Ac: "Actínio", Th: "Tório", Pa: "Protactínio", U: "Urânio", Np: "Neptúnio", Pu: "Plutônio", Am: "Amerício", Cm: "Cúrio", Bk: "Berquélio", Cf: "Califórnio", Es: "Einsténio", Fm: "Férmio", Md: "Mendelévio", No: "Nobélio", Lr: "Laurêncio",
     Rf: "Rutherfórdio", Db: "Dúbnio", Sg: "Seabórgio", Bh: "Bóhrio", Hs: "Hássio", Mt: "Meitnério", Ds: "Darmstádio", Rg: "Roentgênio", Cn: "Copernício", Nh: "Nihônio", Fl: "Fleróvio", Mc: "Moscóvio", Lv: "Livermório", Ts: "Tenessino", Og: "Oganessônio"
   },
+   periodicTableCategories: {
+    'diatomic nonmetal': "Não Metal Diatômico",
+    'noble gas': "Gás Nobre",
+    'alkali metal': "Metal Alcalino",
+    'alkaline earth metal': "Metal Alcalinoterroso",
+    'metalloid': "Metaloide",
+    'polyatomic nonmetal': "Não Metal Poliatômico",
+    'post-transition metal': "Metal Pós-Transição",
+    'transition metal': "Metal de Transição",
+    'lanthanide': "Lantanídeo",
+    'actinide': "Actinídeo",
+    'unknown, probably transition metal': 'Desconhecido',
+    'unknown, probably post-transition metal': 'Desconhecido',
+    'unknown, probably metalloid': 'Desconhecido',
+    'unknown, predicted to be noble gas': 'Desconhecido',
+    'unknown': "Desconhecido"
+  },
 };
 
 const es: Translation = {
@@ -254,6 +289,23 @@ const es: Translation = {
     Hf: "Hafnio", Ta: "Tántalo", W: "Tungsteno", Re: "Renio", Os: "Osmio", Ir: "Iridio", Pt: "Platino", Au: "Oro", Hg: "Mercurio", Tl: "Talio", Pb: "Plomo", Bi: "Bismuto", Po: "Polonio", At: "Astato", Rn: "Radón",
     Fr: "Francio", Ra: "Radio", Ac: "Actinio", Th: "Torio", Pa: "Protactinio", U: "Uranio", Np: "Neptunio", Pu: "Plutonio", Am: "Americio", Cm: "Curio", Bk: "Berkelio", Cf: "Californio", Es: "Einstenio", Fm: "Fermio", Md: "Mendelevio", No: "Nobelio", Lr: "Laurencio",
     Rf: "Rutherfordio", Db: "Dubnio", Sg: "Seaborgio", Bh: "Bohrio", Hs: "Hasio", Mt: "Meitnerio", Ds: "Darmstadtio", Rg: "Roentgenio", Cn: "Copernicio", Nh: "Nihonio", Fl: "Flerovio", Mc: "Moscovio", Lv: "Livermorio", Ts: "Teneso", Og: "Oganesón"
+  },
+  periodicTableCategories: {
+    'diatomic nonmetal': "No Metal Diatómico",
+    'noble gas': "Gas Noble",
+    'alkali metal': "Metal Alcalino",
+    'alkaline earth metal': "Metal Alcalinotérreo",
+    'metalloid': "Metaloide",
+    'polyatomic nonmetal': "No Metal Poliatómico",
+    'post-transition metal': "Metal de Post-Transición",
+    'transition metal': "Metal de Transición",
+    'lanthanide': "Lantánido",
+    'actinide': "Actínido",
+    'unknown, probably transition metal': 'Desconocido',
+    'unknown, probably post-transition metal': 'Desconocido',
+    'unknown, probably metalloid': 'Desconocido',
+    'unknown, predicted to be noble gas': 'Desconocido',
+    'unknown': "Desconocido"
   },
 };
 
@@ -323,6 +375,23 @@ const de: Translation = {
     Fr: "Francium", Ra: "Radium", Ac: "Actinium", Th: "Thorium", Pa: "Protactinium", U: "Uran", Np: "Neptunium", Pu: "Plutonium", Am: "Americium", Cm: "Curium", Bk: "Berkelium", Cf: "Californium", Es: "Einsteinium", Fm: "Fermium", Md: "Mendelevium", No: "Nobelium", Lr: "Lawrencium",
     Rf: "Rutherfordium", Db: "Dubnium", Sg: "Seaborgium", Bh: "Bohrium", Hs: "Hassium", Mt: "Meitnerium", Ds: "Darmstadtium", Rg: "Roentgenium", Cn: "Copernicium", Nh: "Nihonium", Fl: "Flerovium", Mc: "Moscovium", Lv: "Livermorium", Ts: "Tenness", Og: "Oganesson"
   },
+  periodicTableCategories: {
+    'diatomic nonmetal': "Diatomisches Nichtmetall",
+    'noble gas': "Edelgas",
+    'alkali metal': "Alkalimetall",
+    'alkaline earth metal': "Erdalkalimetall",
+    'metalloid': "Halbmetall",
+    'polyatomic nonmetal': "Polyatomisches Nichtmetall",
+    'post-transition metal': "Post-Übergangsmetall",
+    'transition metal': "Übergangsmetall",
+    'lanthanide': "Lanthanoid",
+    'actinide': "Actinoid",
+    'unknown, probably transition metal': 'Unbekannt',
+    'unknown, probably post-transition metal': 'Unbekannt',
+    'unknown, probably metalloid': 'Unbekannt',
+    'unknown, predicted to be noble gas': 'Unbekannt',
+    'unknown': "Unbekannt"
+  },
 };
 
 const fr: Translation = {
@@ -390,6 +459,23 @@ const fr: Translation = {
     Hf: "Hafnium", Ta: "Tantale", W: "Tungstène", Re: "Rhénium", Os: "Osmium", Ir: "Iridium", Pt: "Platine", Au: "Or", Hg: "Mercure", Tl: "Thallium", Pb: "Plomb", Bi: "Bismuth", Po: "Polonium", At: "Astate", Rn: "Radon",
     Fr: "Francium", Ra: "Radium", Ac: "Actinium", Th: "Thorium", Pa: "Protactinium", U: "Uranium", Np: "Neptunium", Pu: "Plutonium", Am: "Américium", Cm: "Curium", Bk: "Berkélium", Cf: "Californium", Es: "Einsteinium", Fm: "Fermium", Md: "Mendélévium", No: "Nobélium", Lr: "Lawrencium",
     Rf: "Rutherfordium", Db: "Dubnium", Sg: "Seaborgium", Bh: "Bohrium", Hs: "Hassium", Mt: "Meitnérium", Ds: "Darmstadtium", Rg: "Roentgenium", Cn: "Copernicium", Nh: "Nihonium", Fl: "Flerovium", Mc: "Moscovium", Lv: "Livermorium", Ts: "Tennesse", Og: "Oganesson"
+  },
+  periodicTableCategories: {
+    'diatomic nonmetal': "Non-métal diatomique",
+    'noble gas': "Gaz Noble",
+    'alkali metal': "Métal Alcalin",
+    'alkaline earth metal': "Métal Alcalino-terreux",
+    'metalloid': "Métalloïde",
+    'polyatomic nonmetal': "Non-métal polyatomique",
+    'post-transition metal': "Métal de post-transition",
+    'transition metal': "Métal de transition",
+    'lanthanide': "Lanthanide",
+    'actinide': "Actinide",
+    'unknown, probably transition metal': 'Inconnu',
+    'unknown, probably post-transition metal': 'Inconnu',
+    'unknown, probably metalloid': 'Inconnu',
+    'unknown, predicted to be noble gas': 'Inconnu',
+    'unknown': "Inconnu"
   },
 };
 

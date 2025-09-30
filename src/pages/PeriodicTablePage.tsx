@@ -54,6 +54,7 @@ const ElementModal: React.FC<{ element: ElementData; onClose: () => void; }> = (
         ) : null;
         
     const translatedName = t.elements[element.symbol] || element.name;
+    const translatedCategory = t.periodicTableCategories[element.category] || <span className="capitalize">{element.category}</span>;
 
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
@@ -74,7 +75,7 @@ const ElementModal: React.FC<{ element: ElementData; onClose: () => void; }> = (
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
                         {detailItem(t.periodicTable.atomicNumber, element.number)}
                         {detailItem(t.periodicTable.atomicMass, element.atomic_mass)}
-                        {detailItem(t.periodicTable.category, <span className="capitalize">{element.category}</span>)}
+                        {detailItem(t.periodicTable.category, translatedCategory)}
                         {detailItem(t.periodicTable.phase, element.phase)}
                         {detailItem(t.periodicTable.density, element.density ? `${element.density} g/cm³` : null)}
                         {detailItem(t.periodicTable.boilingPoint, element.boil ? `${element.boil} K` : null)}
@@ -90,11 +91,38 @@ const ElementModal: React.FC<{ element: ElementData; onClose: () => void; }> = (
     );
 };
 
+const Legend: React.FC = () => {
+    const { t } = useLanguage();
+    const legendItems = [
+        { key: 'alkali metal', color: 'bg-red-500/30 border-red-400' },
+        { key: 'alkaline earth metal', color: 'bg-orange-500/30 border-orange-400' },
+        { key: 'transition metal', color: 'bg-indigo-500/30 border-indigo-400' },
+        { key: 'post-transition metal', color: 'bg-blue-500/30 border-blue-400' },
+        { key: 'lanthanide', color: 'bg-pink-500/30 border-pink-400' },
+        { key: 'actinide', color: 'bg-rose-500/30 border-rose-400' },
+        { key: 'metalloid', color: 'bg-yellow-500/30 border-yellow-400' },
+        { key: 'polyatomic nonmetal', color: 'bg-green-600/30 border-green-500' },
+        { key: 'diatomic nonmetal', color: 'bg-green-500/30 border-green-400' },
+        { key: 'noble gas', color: 'bg-purple-500/30 border-purple-400' },
+        { key: 'unknown', color: 'bg-gray-700/30 border-gray-600' }
+    ];
+
+    return (
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4 px-2">
+            {legendItems.map(item => (
+                <div key={item.key} className="flex items-center gap-2 text-xs">
+                    <div className={`w-3.5 h-3.5 rounded-sm border ${item.color}`}></div>
+                    <span className="text-gray-300">{t.periodicTableCategories[item.key]}</span>
+                </div>
+            ))}
+        </div>
+    );
+};
+
 const PeriodicTablePage: React.FC = () => {
     const [selectedElement, setSelectedElement] = useState<ElementData | null>(null);
     const { t } = useLanguage();
     
-    // The data uses ypos 9 and 10 for lanthanides/actinides to place them below.
     const allElements = PERIODIC_TABLE_DATA;
 
     const PlaceholderTile: React.FC<{text: string, style: React.CSSProperties, className?: string}> = ({text, style, className}) => (
@@ -110,6 +138,8 @@ const PeriodicTablePage: React.FC = () => {
                 <p className="text-sm md:text-base text-gray-400">{t.periodicTable.description}</p>
             </header>
             
+            <Legend />
+
             <div className="flex-1 overflow-auto p-2">
                 <div className="grid gap-1" style={{ 
                     gridTemplateColumns: 'repeat(18, minmax(0, 1fr))', 
