@@ -1,67 +1,89 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import type { ElementData } from '../types';
 import { PERIODIC_TABLE_DATA } from '../constants';
-import { useLanguage } from '../contexts/LanguageContext';
 import { X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
-const categoryColors: { [key: string]: string } = {
-  'diatomic nonmetal': 'bg-green-500/80 hover:bg-green-400',
-  'noble gas': 'bg-purple-500/80 hover:bg-purple-400',
-  'alkali metal': 'bg-red-500/80 hover:bg-red-400',
-  'alkaline earth metal': 'bg-orange-500/80 hover:bg-orange-400',
-  metalloid: 'bg-yellow-500/80 hover:bg-yellow-400',
-  'polyatomic nonmetal': 'bg-green-600/80 hover:bg-green-500',
-  'post-transition metal': 'bg-blue-400/80 hover:bg-blue-300',
-  'transition metal': 'bg-blue-600/80 hover:bg-blue-500',
-  lanthanide: 'bg-indigo-400/80 hover:bg-indigo-300',
-  actinide: 'bg-indigo-600/80 hover:bg-indigo-500',
-  'unknown, probably transition metal': 'bg-gray-500/80 hover:bg-gray-400',
-  'unknown, probably post-transition metal': 'bg-gray-500/80 hover:bg-gray-400',
-  'unknown, probably metalloid': 'bg-gray-500/80 hover:bg-gray-400',
-  'unknown, predicted to be noble gas': 'bg-gray-500/80 hover:bg-gray-400',
+const ElementTile: React.FC<{ element: ElementData; onSelect: (element: ElementData) => void; }> = ({ element, onSelect }) => {
+  const { t } = useLanguage();
+  const categoryColors: { [key: string]: string } = {
+    'diatomic nonmetal': 'bg-green-500/30 border-green-400 hover:bg-green-500/50',
+    'noble gas': 'bg-purple-500/30 border-purple-400 hover:bg-purple-500/50',
+    'alkali metal': 'bg-red-500/30 border-red-400 hover:bg-red-500/50',
+    'alkaline earth metal': 'bg-orange-500/30 border-orange-400 hover:bg-orange-500/50',
+    'metalloid': 'bg-yellow-500/30 border-yellow-400 hover:bg-yellow-500/50',
+    'polyatomic nonmetal': 'bg-green-600/30 border-green-500 hover:bg-green-600/50',
+    'post-transition metal': 'bg-blue-500/30 border-blue-400 hover:bg-blue-500/50',
+    'transition metal': 'bg-indigo-500/30 border-indigo-400 hover:bg-indigo-500/50',
+    'lanthanide': 'bg-pink-500/30 border-pink-400 hover:bg-pink-500/50',
+    'actinide': 'bg-rose-500/30 border-rose-400 hover:bg-rose-500/50',
+    'unknown, probably transition metal': 'bg-gray-700/30 border-gray-600 hover:bg-gray-700/50',
+    'unknown, probably post-transition metal': 'bg-gray-700/30 border-gray-600 hover:bg-gray-700/50',
+    'unknown, probably metalloid': 'bg-gray-700/30 border-gray-600 hover:bg-gray-700/50',
+    'unknown, predicted to be noble gas': 'bg-gray-700/30 border-gray-600 hover:bg-gray-700/50',
+
+  };
+  const defaultColor = 'bg-gray-700/30 border-gray-600 hover:bg-gray-700/50';
+  const colorClass = categoryColors[element.category] || defaultColor;
+
+  return (
+    <div
+      style={{
+        gridColumn: element.xpos,
+        gridRow: element.ypos,
+      }}
+      className={`p-1 md:p-2 border rounded-md cursor-pointer transition-all duration-200 hover:scale-110 hover:z-10 relative ${colorClass}`}
+      onClick={() => onSelect(element)}
+    >
+      <div className="text-xs text-gray-400">{element.number}</div>
+      <div className="text-lg md:text-xl font-bold text-white">{element.symbol}</div>
+      <div className="text-xs truncate text-gray-300">{t.elements[element.symbol] || element.name}</div>
+    </div>
+  );
 };
 
-const ElementTile: React.FC<{ element: ElementData; onClick: () => void }> = ({ element, onClick }) => (
-  <div
-    onClick={onClick}
-    className={`p-1 rounded-md cursor-pointer transition-transform duration-200 hover:scale-110 hover:z-10 relative ${categoryColors[element.category] || 'bg-gray-700'}`}
-    style={{ gridColumn: element.xpos, gridRow: element.ypos }}
-  >
-    <div className="text-[10px] sm:text-xs text-white/70">{element.number}</div>
-    <div className="text-base sm:text-xl font-bold text-center">{element.symbol}</div>
-    <div className="text-[10px] sm:text-xs truncate text-center">{element.name}</div>
-  </div>
-);
-
-const ElementDetail: React.FC<{ element: ElementData; onClose: () => void }> = ({ element, onClose }) => {
+const ElementModal: React.FC<{ element: ElementData; onClose: () => void; }> = ({ element, onClose }) => {
     const { t } = useLanguage();
+
+    const detailItem = (label: string, value: string | number | null | undefined | React.ReactNode) =>
+        value || value === 0 ? (
+            <div className="flex justify-between py-2 border-b border-gray-700/50">
+                <span className="text-gray-400">{label}</span>
+                <span className="text-white text-right break-words">{value}</span>
+            </div>
+        ) : null;
+        
+    const translatedName = t.elements[element.symbol] || element.name;
+
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-800 border border-gray-700 rounded-lg max-w-2xl w-full relative p-6 shadow-2xl animate-fade-in-up">
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white transition">
-                    <X size={24} />
-                </button>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
-                    <div className={`w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 flex flex-col justify-center items-center rounded-lg ${categoryColors[element.category] || 'bg-gray-700'}`}>
-                        <div className="text-sm">{element.number}</div>
-                        <div className="text-3xl sm:text-4xl font-bold">{element.symbol}</div>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+            <div className="bg-gray-900 border border-gray-700 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fade-in-up" onClick={(e) => e.stopPropagation()}>
+                <header className="flex items-center justify-between p-4 border-b border-gray-700 sticky top-0 bg-gray-900 z-10">
+                    <h2 className="text-2xl font-bold text-white">{translatedName} ({element.symbol})</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white transition">
+                        <X size={24} />
+                    </button>
+                </header>
+                <div className="p-4 md:p-6 space-y-4">
+                    <p className="text-gray-300">{element.summary}</p>
+                    {element.spectral_img && (
+                        <div className="my-4 p-2 bg-black rounded-lg">
+                           <img src={element.spectral_img} alt={`${translatedName} spectral image`} className="max-w-full h-auto mx-auto rounded" />
+                        </div>
+                    )}
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        {detailItem(t.periodicTable.atomicNumber, element.number)}
+                        {detailItem(t.periodicTable.atomicMass, element.atomic_mass)}
+                        {detailItem(t.periodicTable.category, <span className="capitalize">{element.category}</span>)}
+                        {detailItem(t.periodicTable.phase, element.phase)}
+                        {detailItem(t.periodicTable.density, element.density ? `${element.density} g/cm³` : null)}
+                        {detailItem(t.periodicTable.boilingPoint, element.boil ? `${element.boil} K` : null)}
+                        {detailItem(t.periodicTable.meltingPoint, element.melt ? `${element.melt} K` : null)}
+                        {detailItem(t.periodicTable.molarHeat, element.molar_heat ? `${element.molar_heat} J/(mol·K)` : null)}
+                        {detailItem(t.periodicTable.electronConfig, element.electron_configuration_semantic)}
+                        {detailItem(t.periodicTable.electronegativity, element.electronegativity_pauling)}
+                        {detailItem(t.periodicTable.discoveredBy, element.discovered_by)}
                     </div>
-                    <div>
-                        <h2 className="text-2xl sm:text-3xl font-bold">{element.name}</h2>
-                        <p className="capitalize text-cyan-400">{t.periodicTablePage.categories[element.category.replace(/,.*?$/, '')] || element.category}</p>
-                        <p className="text-sm mt-2 text-gray-400">{element.summary}</p>
-                    </div>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 text-sm">
-                    <div><strong className="text-gray-300">{t.periodicTablePage.atomicMass}:</strong> <span className="text-white">{element.atomic_mass.toFixed(3)}</span></div>
-                    <div><strong className="text-gray-300">{t.periodicTablePage.density}:</strong> <span className="text-white">{element.density ?? 'N/A'} g/cm³</span></div>
-                    <div><strong className="text-gray-300">{t.periodicTablePage.phase}:</strong> <span className="text-white capitalize">{element.phase}</span></div>
-                    <div><strong className="text-gray-300">{t.periodicTablePage.melt}:</strong> <span className="text-white">{element.melt ? `${(element.melt - 273.15).toFixed(2)} °C` : 'N/A'}</span></div>
-                    <div><strong className="text-gray-300">{t.periodicTablePage.boil}:</strong> <span className="text-white">{element.boil ? `${(element.boil - 273.15).toFixed(2)} °C` : 'N/A'}</span></div>
-                    <div><strong className="text-gray-300">{t.periodicTablePage.discoveredBy}:</strong> <span className="text-white">{element.discovered_by ?? 'N/A'}</span></div>
-                </div>
-                 <div className="mt-4 text-xs sm:text-sm break-words">
-                    <strong className="text-gray-300">{t.periodicTablePage.electronConfig}:</strong> <span className="text-white font-mono">{element.electron_configuration_semantic}</span>
                 </div>
             </div>
         </div>
@@ -69,46 +91,44 @@ const ElementDetail: React.FC<{ element: ElementData; onClose: () => void }> = (
 };
 
 const PeriodicTablePage: React.FC = () => {
-  const [selectedElement, setSelectedElement] = useState<ElementData | null>(null);
-  const { t } = useLanguage();
+    const [selectedElement, setSelectedElement] = useState<ElementData | null>(null);
+    const { t } = useLanguage();
+    
+    // The data uses ypos 9 and 10 for lanthanides/actinides to place them below.
+    const allElements = PERIODIC_TABLE_DATA;
 
-  const periodicTable = useMemo(() => PERIODIC_TABLE_DATA, []);
-
-  const categoryTranslations = t.periodicTablePage.categories;
-
-  return (
-    <div className="p-4 md:p-6 h-full flex flex-col items-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">{t.periodicTablePage.title}</h2>
-        <p className="text-gray-400 mb-6 text-center">{t.periodicTablePage.description}</p>
-        
-        <div className="w-full overflow-x-auto pb-4">
-            <div className="grid gap-1 min-w-[900px]" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
-                {periodicTable.map(el => (
-                    <ElementTile key={el.number} element={el} onClick={() => setSelectedElement(el)} />
-                ))}
-            </div>
+    const PlaceholderTile: React.FC<{text: string, style: React.CSSProperties, className?: string}> = ({text, style, className}) => (
+        <div style={style} className={`flex items-center justify-center p-2 rounded-md text-xs text-center ${className}`}>
+            {text}
         </div>
-        
-        <div className="mt-6 w-full max-w-4xl">
-            <h3 className="text-lg font-semibold text-center mb-2">{t.periodicTablePage.legend}</h3>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
-                {Object.entries(categoryColors).map(([category, className]) => {
-                    const cleanCategory = category.replace(/,.*?$/, '');
-                    const translatedCategory = categoryTranslations[cleanCategory] || cleanCategory;
-                    if (!translatedCategory) return null;
-                    return (
-                        <div key={category} className="flex items-center gap-2">
-                            <div className={`w-3 h-3 rounded-sm ${className.split(' ')[0]}`}></div>
-                            <span className="capitalize text-gray-400">{translatedCategory}</span>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+    );
 
-        {selectedElement && <ElementDetail element={selectedElement} onClose={() => setSelectedElement(null)} />}
-    </div>
-  );
+    return (
+        <div className="p-4 md:p-6 h-full flex flex-col">
+            <header className="mb-4 border-b border-gray-700 pb-4">
+                <h2 className="text-xl md:text-2xl font-bold text-white">{t.periodicTable.title}</h2>
+                <p className="text-sm md:text-base text-gray-400">{t.periodicTable.description}</p>
+            </header>
+            
+            <div className="flex-1 overflow-auto p-2">
+                <div className="grid gap-1" style={{ 
+                    gridTemplateColumns: 'repeat(18, minmax(0, 1fr))', 
+                    gridTemplateRows: 'repeat(10, minmax(0, auto))',
+                    minWidth: '1000px'
+                }}>
+                    {allElements.map((element) => (
+                        <ElementTile key={element.number} element={element} onSelect={setSelectedElement} />
+                    ))}
+                    <PlaceholderTile text="* 57-71" style={{ gridColumn: 3, gridRow: 6 }} className="bg-pink-500/30 text-pink-300" />
+                    <PlaceholderTile text="** 89-103" style={{ gridColumn: 3, gridRow: 7 }} className="bg-rose-500/30 text-rose-300" />
+                    <PlaceholderTile text="*" style={{ gridColumn: 2, gridRow: 9 }} className="text-pink-300" />
+                    <PlaceholderTile text="**" style={{ gridColumn: 2, gridRow: 10 }} className="text-rose-300" />
+                </div>
+            </div>
+
+            {selectedElement && <ElementModal element={selectedElement} onClose={() => setSelectedElement(null)} />}
+        </div>
+    );
 };
 
 export default PeriodicTablePage;
