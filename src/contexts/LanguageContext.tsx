@@ -13,7 +13,8 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<string>('pt'); // Default to Portuguese
 
-  const t = useMemo(() => translations[language] || translations.en, [language]);
+  // FIX: Assert that `language` is a valid key of the `translations` object.
+  const t = useMemo(() => translations[language as keyof typeof translations] || translations.en, [language]);
   
   const availableLanguages = {
       pt: "Português",
